@@ -12,6 +12,10 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
     />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <style>
       .monster-card[data-monster-type="cosmique"] {
         background: linear-gradient(to right, #6e48aa, #9d50bb);
@@ -232,7 +236,8 @@
           <div
             v-for="monster in monsters"
             :key="monster.id"
-            class="monster-card bg-gray-700 rounded-lg shadow-lg p-6"
+            class="monster-card bg-gray-700 rounded-lg shadow-lg p-6 animate__animated"
+            :class="{ animate__backOutRight : monster.isDeleted}"
             :data-monster-type="monster.type"
           >
             <img
@@ -253,6 +258,7 @@
               </button>
               <button
                 class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded-full"
+                @click.prevent="deleteOneById(monster.id)"
               >
                 Supprimer
               </button>
@@ -298,7 +304,19 @@
             this.monsters.push({ ...this.inputMonster });
             this.inputMonster = { id: null, name: "", type: "", pv: "", attack: ""};
           },
-         },
+         
+
+         deleteOneById(id) {
+            const monster = this.monsters.find((item) => item.id == id);
+            monster.isDeleted = true;
+            setTimeout(() => {
+              this.monsters.splice(
+                this.monsters.findIndex((item) => item.id == id),
+                1
+              );
+            }, 600);
+          },
+        },
 
 
 
