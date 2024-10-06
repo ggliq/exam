@@ -102,6 +102,7 @@
                 type="text"
                 class="w-full p-2 bg-gray-800 text-white rounded"
                 placeholder="Nom du monstre"
+                v-model="inputMonster.name"
               />
             </div>
 
@@ -113,6 +114,7 @@
                   type="number"
                   class="w-full p-2 bg-gray-800 text-white rounded"
                   placeholder="PV"
+                  v-model="inputMonster.pv"
                 />
               </div>
               <div>
@@ -121,6 +123,7 @@
                   type="number"
                   class="w-full p-2 bg-gray-800 text-white rounded"
                   placeholder="Attaque"
+                  v-model="inputMonster.attack"
                 />
               </div>
             </div>
@@ -130,12 +133,13 @@
               <textarea
                 class="w-full p-2 bg-gray-800 text-white rounded"
                 placeholder="Description du monstre"
+                v-model="inputMonster.description"
               ></textarea>
             </div>
 
             <div>
               <label class="block mb-2">Type de Monstre</label>
-              <select class="w-full p-2 bg-gray-800 text-white rounded">
+              <select class="w-full p-2 bg-gray-800 text-white rounded" v-model="inputMonster.type">
                 <option value="aquatique">Aquatique</option>
                 <option value="terrestre">Terrestre</option>
                 <option value="volant">Volant</option>
@@ -146,6 +150,7 @@
 
             <button
               class="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              @click.prevent="addOne()"
             >
               Ajouter Monstre
             </button>
@@ -263,28 +268,37 @@
         <p>&copy; 2024 Monstres WTF Vintage. Tous droits réservés.</p>
       </div>
     </footer>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 
     <script>
-       localStorage.setItem(
-         "monsters",
-         JSON.stringify([
-           {
-             id: Date.now(),
-             name: "Aqualizzard",
-             type: "terrestre",
-             pv: "50",
-             attaque: "50",
-           },
-         ])
-       );
+       // localStorage.setItem(
+      //   "monsters",
+      //   JSON.stringify([
+      //     {
+      //       id: Date.now(),
+      //       name: "Aqualizzard",
+      //       type: "aquatique",
+      //       pv: "50",
+      //       attaque: "50",
+      //     },
+      //   ])
+      // );
 
        Vue.createApp({
         data() {
           return {
             monsters: JSON.parse(localStorage.getItem("monsters")) || [],
+            inputMonster: { id: null, name: "", type: "", pv: "", attack: ""},
           };
         },
+
+        methods: {
+          addOne() {
+            this.inputMonster.id = Date.now();
+            this.monsters.push({ ...this.inputMonster });
+            this.inputMonster = { id: null, name: "", type: "", pv: "", attack: ""};
+          },
+         },
 
 
 
